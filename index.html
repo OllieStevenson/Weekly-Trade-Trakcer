@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pro Trend Trades — Week of Aug 31</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Archivo:wght@500;600;700;800;900&display=swap');
+
+:root{
+  --bg:#0A0D10;
+  --panel:#12161B;
+  --panel-2:#171C22;
+  --line:#242B33;
+  --text:#E7EAEE;
+  --muted:#8B96A3;
+  --dim:#5B6570;
+  --green:#00D97E;
+  --red:#FF5470;
+  --amber:#FFB020;
+  --mono:'IBM Plex Mono', monospace;
+  --disp:'Archivo', sans-serif;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+
+body{
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0,217,126,0.07), transparent),
+    radial-gradient(ellipse 700px 500px at 90% 10%, rgba(255,84,112,0.06), transparent),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--mono);
+  padding:0 0 80px 0;
+  min-width:320px;
+}
+
+.wrap{max-width:1020px; margin:0 auto; padding:0 20px;}
+
+/* ---------- HEADER ---------- */
+header{
+  padding:48px 20px 32px 20px;
+  border-bottom:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+}
+header .wrap{position:relative; z-index:2;}
+
+.eyebrow{
+  font-family:var(--mono); font-size:12px; letter-spacing:0.18em;
+  color:var(--amber); text-transform:uppercase; margin-bottom:14px;
+  display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--amber); box-shadow:0 0 8px var(--amber); display:inline-block;}
+
+h1{
+  font-family:var(--disp); font-weight:900; font-size:clamp(30px,5.5vw,50px);
+  letter-spacing:-0.02em; line-height:1.03; color:#fff;
+}
+h1 em{font-style:normal; color:var(--green);}
+
+.subhead{
+  color:var(--muted); font-size:14px; margin-top:14px; max-width:640px; line-height:1.55;
+}
+
+.head-meta{
+  display:flex; gap:26px; flex-wrap:wrap; margin-top:26px; font-size:11.5px; color:var(--dim);
+}
+.head-meta b{color:var(--muted); font-weight:600;}
+.head-note{
+  margin-top:16px; font-size:11.5px; color:var(--dim); border-left:2px solid var(--line); padding-left:12px; max-width:560px; line-height:1.6;
+}
+
+/* ---------- VIEW TABS ---------- */
+.view-tabs{display:flex; gap:8px; margin:26px 0 0 0; border-bottom:1px solid var(--line); padding-bottom:0;}
+.view-tab{
+  background:transparent; border:none; color:var(--dim); font-family:var(--disp); font-weight:700; font-size:14px;
+  padding:10px 4px; margin-right:22px; cursor:pointer; position:relative; letter-spacing:0.01em;
+}
+.view-tab::after{content:''; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:transparent; border-radius:2px;}
+.view-tab:hover{color:var(--muted);}
+.view-tab.active{color:#fff;}
+.view-tab.active::after{background:var(--green);}
+.news-count{
+  display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px;
+  background:var(--panel); border:1px solid var(--line); border-radius:20px; color:var(--muted); font-size:10.5px;
+  font-family:var(--mono); font-weight:600; margin-left:4px;
+}
+.view-tab.active .news-count{border-color:var(--green); color:var(--green);}
+
+/* ---------- NEWS ---------- */
+.news-toolbar{margin:18px 0 20px 0;}
+.news-card{
+  background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--dim); border-radius:10px;
+  padding:18px 20px; margin-bottom:14px; position:relative;
+}
+.news-card.impact-high{border-left-color:var(--red);}
+.news-card.impact-medium{border-left-color:var(--amber);}
+.news-card.impact-low{border-left-color:var(--dim);}
+.news-top{display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;}
+.news-event{
+  flex:1; min-width:180px; font-family:var(--disp); font-weight:800; font-size:16px; color:#fff; background:transparent;
+  border:none; outline:none; font-family:var(--disp); border-bottom:1px dashed transparent; padding:2px 0;
+}
+.news-event:focus{border-bottom-color:var(--line);}
+.impact-select{
+  font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 11px; border-radius:20px; font-weight:700;
+  border:none; font-family:var(--mono); cursor:pointer; outline:none; appearance:none; -webkit-appearance:none; flex-shrink:0;
+}
+.impact-select.impact-high{background:rgba(255,84,112,0.14); color:var(--red);}
+.impact-select.impact-medium{background:rgba(255,176,32,0.14); color:var(--amber);}
+.impact-select.impact-low{background:rgba(91,101,112,0.2); color:var(--muted);}
+.impact-select option{background:var(--panel-2); color:var(--text);}
+.news-meta-row{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;}
+.news-field{display:flex; flex-direction:column; gap:4px; flex:1; min-width:200px;}
+.news-field label{font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--dim);}
+.news-date, .news-pairs{
+  background:var(--panel-2); border:1px solid var(--line); border-radius:6px; padding:7px 10px; font-size:12.5px;
+  color:var(--text); font-family:var(--mono); outline:none; transition:border-color .15s;
+}
+.news-date:focus, .news-pairs:focus{border-color:var(--muted);}
+.news-note{
+  width:100%; min-height:56px; background:var(--panel-2); border:1px solid var(--line); border-radius:6px; padding:10px 12px;
+  color:var(--muted); font-size:13px; font-family:var(--mono); outline:none; resize:vertical; line-height:1.5; transition:border-color .15s;
+}
+.news-note:focus{border-color:var(--muted); color:var(--text);}
+.news-note-label{font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--dim); margin-bottom:4px; display:block;}
+
+/* ---------- CONTROLS ---------- */
+.controls{
+  padding:28px 0 0 0; display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between;
+}
+.filter-tabs{display:flex; gap:8px; flex-wrap:wrap;}
+.filter-tab{
+  background:var(--panel); border:1px solid var(--line); color:var(--muted); font-family:var(--mono);
+  font-size:12px; padding:8px 16px; border-radius:20px; cursor:pointer; transition:all .15s; letter-spacing:0.02em;
+}
+.filter-tab:hover{border-color:var(--dim); color:var(--text);}
+.filter-tab.active{background:var(--text); color:var(--bg); border-color:var(--text); font-weight:600;}
+.filter-tab.active.f-bullish{background:var(--green); border-color:var(--green); color:#052014;}
+.filter-tab.active.f-bearish{background:var(--red); border-color:var(--red); color:#2b0510;}
+.filter-tab.active.f-pending{background:var(--amber); border-color:var(--amber); color:#2b1c00;}
+
+/* ---------- WEEK TABS ---------- */
+.week-nav-wrap{
+  background:rgba(10,13,16,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:50;
+}
+.week-nav{
+  max-width:1020px; margin:0 auto; padding:12px 20px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+}
+.week-tab{
+  display:flex; align-items:center; gap:8px; background:var(--panel); border:1px solid var(--line); color:var(--muted);
+  font-family:var(--disp); font-weight:700; font-size:13px; padding:8px 14px; border-radius:8px; cursor:pointer;
+  transition:all .15s;
+}
+.week-tab:hover{border-color:var(--dim); color:var(--text);}
+.week-tab.active{background:var(--green); border-color:var(--green); color:#052014;}
+.week-tab.active .week-tab-del{color:#052014; opacity:0.6;}
+.week-tab-label{outline:none; cursor:text;}
+.week-tab-del{font-family:var(--mono); font-size:11px; color:var(--dim); opacity:0.5; transition:opacity .15s;}
+.week-tab-del:hover{opacity:1 !important; color:var(--red);}
+.week-tab.active .week-tab-del:hover{color:#2b0510;}
+.week-tab-add{background:transparent; border:1px dashed var(--line); color:var(--dim); font-weight:600;}
+.week-tab-add:hover{border-color:var(--green); color:var(--green);}
+
+.right-controls{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+.search-box{
+  background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-size:12.5px;
+  color:var(--text); font-family:var(--mono); width:180px; outline:none; transition:border-color .15s;
+}
+.search-box::placeholder{color:var(--dim);}
+.search-box:focus{border-color:var(--muted);}
+
+.btn{
+  font-family:var(--mono); font-size:12px; padding:9px 18px; border-radius:8px; cursor:pointer; border:1px solid var(--line);
+  background:var(--panel); color:var(--text); transition:all .15s; letter-spacing:0.02em;
+}
+.btn:hover{border-color:var(--dim); background:var(--panel-2);}
+.btn.primary{background:var(--green); color:#052014; border-color:var(--green); font-weight:700;}
+.btn.primary:hover{filter:brightness(1.08);}
+.btn.ghost{background:transparent;}
+.btn.danger-txt{color:var(--red); border-color:transparent; background:transparent; padding:4px 8px; font-size:14px;}
+.btn.danger-txt:hover{background:rgba(255,84,112,0.1); border-radius:6px;}
+
+/* ---------- SUMMARY CARDS ---------- */
+.summary{padding:26px 0 8px 0;}
+.summary-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:8px;}
+@media(max-width:900px){.summary-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:560px){.summary-grid{grid-template-columns:1fr 1fr;}}
+
+.stat-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 18px;
+  position:relative; overflow:hidden;
+}
+.stat-card::before{content:''; position:absolute; top:0; left:0; right:0; height:2px;}
+.stat-card.total::before{background:var(--muted);}
+.stat-card.bull::before{background:var(--green);}
+.stat-card.bear::before{background:var(--red);}
+.stat-card.wait::before{background:var(--amber);}
+.stat-card.live::before{background:#4FA8FF;}
+.stat-label{font-size:10px; letter-spacing:0.09em; color:var(--dim); text-transform:uppercase; margin-bottom:8px;}
+.stat-num{font-family:var(--disp); font-weight:900; font-size:30px; line-height:1; color:#fff;}
+.stat-card.bull .stat-num{color:var(--green);}
+.stat-card.bear .stat-num{color:var(--red);}
+.stat-card.wait .stat-num{color:var(--amber);}
+.stat-card.live .stat-num{color:#4FA8FF;}
+.stat-sub{font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.4;}
+
+/* ---------- BIAS CARDS ---------- */
+.section-label{
+  display:flex; align-items:baseline; gap:12px; margin:40px 0 18px 0; flex-wrap:wrap;
+}
+.section-label .sec-title{font-family:var(--disp); font-weight:800; font-size:20px; color:#fff; letter-spacing:-0.01em;}
+.section-label .sec-note{font-size:12px; color:var(--dim); margin-left:auto;}
+
+.trade-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:10px;}
+@media(max-width:820px){.trade-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.trade-grid{grid-template-columns:1fr;}}
+
+.trade-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;
+  border-top:3px solid var(--line); transition:box-shadow .15s, border-color .15s; position:relative;
+}
+.trade-card.bullish{border-top-color:var(--green);}
+.trade-card.bearish{border-top-color:var(--red);}
+.trade-card.pending{border-top-color:var(--amber);}
+.trade-card.is-live{box-shadow:0 0 0 1px #4FA8FF inset; border-color:#4FA8FF;}
+.trade-card.hidden{display:none;}
+
+.trade-top{display:flex; align-items:center; margin-bottom:12px; gap:8px;}
+.trade-pair{font-family:var(--disp); font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.01em; flex:1; outline:none;}
+.trade-top-right{display:flex; align-items:center; gap:6px;}
+
+.bias-select{
+  font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:3px 9px; border-radius:20px; font-weight:600;
+  border:none; font-family:var(--mono); cursor:pointer; outline:none; appearance:none; -webkit-appearance:none;
+}
+.bias-select.bullish{background:rgba(0,217,126,0.14); color:var(--green);}
+.bias-select.bearish{background:rgba(255,84,112,0.14); color:var(--red);}
+.bias-select.pending{background:rgba(255,176,32,0.14); color:var(--amber);}
+.bias-select option{background:var(--panel-2); color:var(--text);}
+
+.live-toggle{
+  width:15px; height:15px; border-radius:4px; border:1px solid var(--line); cursor:pointer; accent-color:#4FA8FF; flex-shrink:0;
+}
+
+.star-btn{
+  background:none; border:none; cursor:pointer; font-size:16px; line-height:1; padding:0 2px; flex-shrink:0;
+  color:var(--line); transition:color .15s, transform .1s;
+}
+.star-btn:hover{transform:scale(1.15);}
+.star-btn.is-fav{color:var(--amber); text-shadow:0 0 8px rgba(255,176,32,0.5);}
+.trade-card.is-fav{box-shadow:0 0 0 1px rgba(255,176,32,0.5) inset;}
+.trade-card.is-fav.is-live{box-shadow:0 0 0 1px #4FA8FF inset, 0 0 0 3px rgba(255,176,32,0.35) inset;}
+tr.is-fav td{background:rgba(255,176,32,0.04);}
+
+.trade-status-row{display:flex; align-items:center; gap:8px; margin-bottom:6px;}
+.trade-status{
+  font-size:10.5px; letter-spacing:0.04em; text-transform:uppercase; color:var(--dim); background:transparent;
+  border:none; border-bottom:1px dashed var(--line); font-family:var(--mono); outline:none; padding:2px 0;
+  width:100%; cursor:text; transition:border-color .15s;
+}
+.trade-status:focus{border-bottom-color:var(--muted); color:var(--muted);}
+
+.trade-note{
+  font-size:13px; color:var(--muted); line-height:1.5; background:transparent; border:none; outline:none;
+  font-family:var(--mono); width:100%; resize:none; min-height:44px; border-radius:4px; padding:4px 0;
+  border-bottom:1px dashed transparent; transition:border-color .15s;
+}
+.trade-note:focus{border-bottom-color:var(--line); background:rgba(255,255,255,0.02);}
+.tf-row{margin-top:10px; display:flex; align-items:center; gap:8px;}
+.tf-input{
+  font-size:10px; color:var(--dim); background:var(--panel-2); border:1px solid var(--line);
+  padding:2px 8px; border-radius:20px; width:52px; font-family:var(--mono); outline:none; text-align:center;
+}
+.tf-input:focus{border-color:var(--muted); color:var(--text);}
+.tf-label{font-size:10px; color:var(--dim);}
+
+.card-del{position:absolute; top:10px; right:10px; opacity:0; transition:opacity .15s;}
+.trade-card:hover .card-del, .news-card:hover .card-del{opacity:1;}
+
+/* ---------- TABLE ---------- */
+.table-wrap{
+  background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:10px;
+  overflow-x:auto;
+}
+table{width:100%; border-collapse:collapse; font-size:13px; min-width:640px;}
+th{
+  text-align:left; color:var(--dim); font-weight:500; font-size:10.5px; letter-spacing:0.08em;
+  text-transform:uppercase; padding:14px 16px; border-bottom:1px solid var(--line); background:var(--panel-2);
+  cursor:pointer; user-select:none; white-space:nowrap;
+}
+th:hover{color:var(--muted);}
+th .arrow{font-size:9px; margin-left:4px; color:var(--dim);}
+td{padding:12px 16px; border-bottom:1px solid var(--line); color:var(--text); vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:rgba(255,255,255,0.015);}
+tbody tr.is-live td{background:rgba(79,168,255,0.05);}
+tbody tr.hidden{display:none;}
+
+.pair-cell{font-family:var(--disp); font-weight:700; font-size:14px; color:#fff; white-space:nowrap;}
+.bias-pill{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; letter-spacing:0.03em;}
+.bias-dot{width:7px; height:7px; border-radius:50%; flex-shrink:0;}
+.bias-pill.bullish{color:var(--green);}
+.bias-pill.bullish .bias-dot{background:var(--green); box-shadow:0 0 6px var(--green);}
+.bias-pill.bearish{color:var(--red);}
+.bias-pill.bearish .bias-dot{background:var(--red); box-shadow:0 0 6px var(--red);}
+.bias-pill.pending{color:var(--amber);}
+.bias-pill.pending .bias-dot{background:var(--amber); box-shadow:0 0 6px var(--amber);}
+
+.status-note{
+  color:var(--muted); font-size:12.5px; line-height:1.5; background:transparent; border:none; outline:none;
+  font-family:var(--mono); width:100%; min-width:220px; border-bottom:1px dashed transparent; padding:2px 0;
+}
+.status-note:focus{border-bottom-color:var(--line);}
+.status-txt{
+  font-size:12px; color:var(--text); background:transparent; border:none; outline:none; font-family:var(--mono);
+  border-bottom:1px dashed transparent; padding:2px 0; width:150px;
+}
+.status-txt:focus{border-bottom-color:var(--line);}
+.tf-tag-input{
+  font-size:10px; color:var(--dim); background:var(--panel-2); border:1px solid var(--line);
+  padding:2px 8px; border-radius:20px; width:48px; font-family:var(--mono); outline:none; text-align:center;
+}
+
+.legend-row{display:flex; gap:22px; flex-wrap:wrap; margin:18px 0 0 0; font-size:11px; color:var(--dim); align-items:center;}
+.legend-row .item{display:flex; align-items:center; gap:7px;}
+.legend-row .dot{width:8px; height:8px; border-radius:50%;}
+
+.empty-state{
+  text-align:center; padding:50px 20px; color:var(--dim); font-size:13px; background:var(--panel);
+  border:1px dashed var(--line); border-radius:10px; margin-bottom:10px;
+}
+
+footer{
+  margin-top:56px; padding:30px 20px; text-align:center; color:var(--dim); font-size:11.5px;
+}
+footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px auto;}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Weekly Watchlist</div>
+    <h1>Pro Trend Trades<br><em id="weekHeading">Week of Aug 31</em></h1>
+    <p class="subhead">Sunday market analysis — pairs on the radar, current bias, and exactly what each one is waiting for before an entry is live.</p>
+    <div class="head-meta">
+      <span><b id="metaTotal">9</b> pairs on watch</span>
+      <span><b id="metaLive">0</b> trades live</span>
+      <span>Updated · Sun, Aug 30</span>
+    </div>
+    <div class="head-note">Everything here is editable — click any bias tag, status line, note, or timeframe to change it. Switch weeks with the tabs below to build up a full history. Changes now save automatically in this browser, so they'll still be here next time you open this page — no re-downloading needed.</div>
+    <div class="head-note" style="margin-top:8px;">Note: this saves per-browser, per-device. Open it in a different browser or clear your browsing data and it'll reset to the built-in starting data.</div>
+  </div>
+</header>
+
+<div class="week-nav-wrap">
+  <div class="week-nav" id="weekNav"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ VIEW TABS ============ -->
+  <div class="view-tabs" id="viewTabs">
+    <button class="view-tab active" data-view="trades">Trades</button>
+    <button class="view-tab" data-view="news">News <span class="news-count" id="newsCount">0</span></button>
+  </div>
+
+  <div id="tradesView">
+
+  <!-- ============ CONTROLS ============ -->
+  <div class="controls">
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab f-bullish" data-filter="bullish">Bullish</button>
+      <button class="filter-tab f-bearish" data-filter="bearish">Bearish</button>
+      <button class="filter-tab f-pending" data-filter="pending">Pending</button>
+      <button class="filter-tab" data-filter="live">Live only</button>
+      <button class="filter-tab" data-filter="fav">★ Favourites</button>
+    </div>
+    <div class="right-controls">
+      <input type="text" class="search-box" id="searchBox" placeholder="Search pair…">
+      <button class="btn primary" id="addTradeBtn">+ Add pair</button>
+      <button class="btn ghost" id="resetBtn" title="Clear saved data and restore the built-in starting data">Reset</button>
+    </div>
+  </div>
+
+  <!-- ============ SUMMARY ============ -->
+  <section class="summary">
+    <div class="summary-grid">
+      <div class="stat-card total">
+        <div class="stat-label">Total Watchlist</div>
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-sub">pairs flagged this week</div>
+      </div>
+      <div class="stat-card bull">
+        <div class="stat-label">Bullish Bias</div>
+        <div class="stat-num" id="statBull">0</div>
+        <div class="stat-sub" id="statBullSub">—</div>
+      </div>
+      <div class="stat-card bear">
+        <div class="stat-label">Bearish Bias</div>
+        <div class="stat-num" id="statBear">0</div>
+        <div class="stat-sub" id="statBearSub">—</div>
+      </div>
+      <div class="stat-card wait">
+        <div class="stat-label">Bias Pending</div>
+        <div class="stat-num" id="statPending">0</div>
+        <div class="stat-sub" id="statPendingSub">—</div>
+      </div>
+      <div class="stat-card live">
+        <div class="stat-label">Live Trades</div>
+        <div class="stat-num" id="statLive">0</div>
+        <div class="stat-sub">marked live via checkbox</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BIAS CARDS ============ -->
+  <div class="section-label">
+    <span class="sec-title">At a Glance</span>
+    <span class="sec-note">Click a bias tag to change it · click the checkbox to mark live</span>
+  </div>
+
+  <div class="trade-grid" id="cardGrid"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">No pairs match this filter or search.</div>
+
+  <!-- ============ DETAIL TABLE ============ -->
+  <div class="section-label">
+    <span class="sec-title">Trade Journal</span>
+    <span class="sec-note">Click column headers to sort</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="pair">Pair <span class="arrow"></span></th>
+          <th data-sort="bias">Bias <span class="arrow"></span></th>
+          <th data-sort="status">Status <span class="arrow"></span></th>
+          <th data-sort="note" style="cursor:default;">Notes</th>
+          <th data-sort="tf">Timeframe <span class="arrow"></span></th>
+          <th style="cursor:default;">Live</th>
+          <th style="cursor:default;"></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="legend-row">
+    <div class="item"><span class="dot" style="background:var(--green); box-shadow:0 0 6px var(--green);"></span> Bullish bias</div>
+    <div class="item"><span class="dot" style="background:var(--red); box-shadow:0 0 6px var(--red);"></span> Bearish bias</div>
+    <div class="item"><span class="dot" style="background:var(--amber); box-shadow:0 0 6px var(--amber);"></span> Bias pending</div>
+    <div class="item"><span class="dot" style="background:#4FA8FF; box-shadow:0 0 6px #4FA8FF;"></span> Marked live</div>
+    <div class="item">★ Favourite of the week</div>
+  </div>
+
+  </div>
+
+  <!-- ============ NEWS VIEW ============ -->
+  <div id="newsView" style="display:none;">
+
+    <div class="section-label" style="margin-top:30px;">
+      <span class="sec-title">This Week's News</span>
+      <span class="sec-note">What's on the calendar, and how much it could move each trade</span>
+    </div>
+
+    <div class="news-toolbar">
+      <button class="btn primary" id="addNewsBtn">+ Add news event</button>
+    </div>
+
+    <div id="newsList"></div>
+    <div class="empty-state" id="newsEmptyState" style="display:none;">No news added for this week yet — click "+ Add news event" to start logging what's on the calendar.</div>
+
+    <div class="legend-row">
+      <div class="item"><span class="dot" style="background:var(--red); box-shadow:0 0 6px var(--red);"></span> High impact</div>
+      <div class="item"><span class="dot" style="background:var(--amber); box-shadow:0 0 6px var(--amber);"></span> Medium impact</div>
+      <div class="item"><span class="dot" style="background:var(--dim);"></span> Low impact</div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <div class="line"></div>
+  Pro Trend Trades · <span id="weekFooter">Week of Aug 31</span><br>
+  Add entries as analysis comes in — bias, status, and notes are all live-editable above. Use the tabs up top to add and switch between weeks.
+</footer>
+
+<script>
+(function(){
+
+  // ---- data: one trades array per week ----
+  const STORAGE_KEY = 'pro-trend-trades-v1';
+
+  const defaultWeeks = [
+    {
+      id:1,
+      label:'Week of Aug 31',
+      news:[
+        {id:1, event:'US Non-Farm Payrolls + Unemployment Rate', date:'Fri Sep 4, 8:30am ET', impact:'high', pairs:'USD/CHF, USD/CAD', note:'The single biggest print of the week for the dollar. A strong beat supports the bullish USD/CHF and USD/CAD bias; a weak miss could stall both setups or flip them.'},
+        {id:2, event:'BoC Rate Decision + Statement', date:'Wed Sep 2, 9:45am ET', impact:'high', pairs:'USD/CAD, EUR/CAD, GBP/CAD, CAD/CHF', note:'Hits every CAD cross on the list at once. A hold with hawkish language firms up CAD; a cut or dovish tone weakens it across all four pairs simultaneously.'},
+        {id:3, event:'Canada Employment Change + Unemployment Rate', date:'Fri Sep 4, 8:30am ET', impact:'high', pairs:'USD/CAD, EUR/CAD, GBP/CAD, CAD/CHF', note:'Lands at the exact same time as NFP, so USD/CAD gets hit from both sides — expect the highest volatility window of the week right here.'},
+        {id:4, event:'Eurozone CPI Flash Estimate', date:'Tue Sep 1, 5:00am ET', impact:'high', pairs:'EUR/JPY, EUR/AUD, EUR/CAD', note:'A hot print firms up ECB hawkish bets and could work against the bearish EUR setups; a soft print supports the bearish bias across all three.'},
+        {id:5, event:'ISM Manufacturing PMI / ISM Services PMI', date:'Tue Sep 1 and Thu Sep 3, 10:00am ET', impact:'medium', pairs:'USD/CHF, USD/CAD', note:'Secondary USD strength gauges either side of NFP — won\'t move the pair alone but can set the tone heading into Friday.'},
+        {id:6, event:'Swiss CPI + GDP', date:'Thu Sep 3, 2:30am and 3:00am ET', impact:'medium', pairs:'USD/CHF, CAD/CHF', note:'Direct CHF-side data for both CHF pairs. A firm GDP/CPI print supports the franc and works against the bullish bias on both.'},
+        {id:7, event:'BoE Governor Bailey Speaks', date:'Fri Sep 4, 4:50am ET', impact:'medium', pairs:'GBP/JPY, GBP/CAD', note:'Off-calendar policy comments can move GBP outside the data schedule — watch for any rate-path signalling.'}
+      ],
+      trades:[
+        {id:1, pair:'USD/CHF', bias:'bullish', status:'Closed — Breakeven', note:'Entry taken off the confirmed retest at 0.80941. Trade closed at breakeven — no loss, no profit.', tf:'4H', live:false, fav:true},
+        {id:2, pair:'USD/CAD', bias:'bullish', status:'Not Taken This Week', note:'Was awaiting break and retest on the higher AOI (or retest on the lower AOI). Not a favourite — sitting out, sticking to favourites-only this week.', tf:'—', live:false, fav:false},
+        {id:3, pair:'EUR/JPY', bias:'bearish', status:'Closed — Take Profit Hit', note:'Entry taken on rejection at the 185.372–185.500 AOI. Ran down to target and hit take profit at the 184.671 zone. Winning trade.', tf:'4H', live:false, fav:true},
+        {id:4, pair:'EUR/AUD', bias:'bearish', status:'Not Taken This Week', note:'Was waiting for a retest on the AOI for a sell. Not a favourite — sitting out, sticking to favourites-only this week.', tf:'—', live:false, fav:false},
+        {id:5, pair:'EUR/CAD', bias:'bearish', status:'Not Taken This Week', note:'Was waiting for either a break and retest on the lower AOI, or a pullback to the higher AOI resistance to sell from. Not a favourite — sitting out, sticking to favourites-only this week.', tf:'—', live:false, fav:false},
+        {id:6, pair:'GBP/JPY', bias:'bearish', status:'Not Taken This Week', note:'Was watching for break and retest on either AOI in play. Favourite of the week, but no more entries being taken this week regardless.', tf:'—', live:false, fav:true},
+        {id:7, pair:'GBP/CAD', bias:'bullish', status:'Not Taken This Week', note:'2H bullish engulfing printed right at the demand zone, long lower wick tagging the level before reversing — signal confirmed but no entry taken. No more entries being taken this week.', tf:'2H', live:false, fav:true},
+        {id:9, pair:'CAD/CHF', bias:'bullish', status:'Not Taken This Week', note:'Was waiting for a break of the AOI, then a retest. Not a favourite — sitting out, sticking to favourites-only this week.', tf:'4H', live:false, fav:false},
+        {id:8, pair:'AUD/CHF', bias:'bullish', status:'Not Taken This Week', note:'Weekly, Daily and 4H all aligned bullish, price retesting the broken 0.57984–0.58012 zone. Not a favourite — sitting out, sticking to favourites-only this week.', tf:'4H', live:false, fav:false}
+      ]
+    },
+    {
+      id:2,
+      label:'Week of Sep 7',
+      news:[],
+      trades:[]
+    }
+  ];
+
+  // ---- load saved data if it exists, otherwise fall back to the defaults above ----
+  let weeks = defaultWeeks;
+  let currentWeekId = 1;
+  let nextId = 10;
+  let nextWeekId = 3;
+  let nextNewsId = 8;
+
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved){
+      const data = JSON.parse(saved);
+      if(data && Array.isArray(data.weeks) && data.weeks.length){
+        weeks = data.weeks;
+        currentWeekId = data.currentWeekId || weeks[0].id;
+        nextId = data.nextId || nextId;
+        nextWeekId = data.nextWeekId || nextWeekId;
+        nextNewsId = data.nextNewsId || nextNewsId;
+      }
+    }
+  } catch(e){
+    console.error('Could not load saved data, using defaults', e);
+  }
+
+  function saveState(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ weeks, currentWeekId, nextId, nextWeekId, nextNewsId }));
+    } catch(e){
+      console.error('Could not save data', e);
+    }
+  }
+
+  let activeFilter = 'all';
+  let activeView = 'trades';
+  let searchTerm = '';
+  let sortKey = null;
+  let sortDir = 1;
+
+  const cardGrid = document.getElementById('cardGrid');
+  const tableBody = document.getElementById('tableBody');
+  const emptyState = document.getElementById('emptyState');
+  const weekNav = document.getElementById('weekNav');
+  const weekHeading = document.getElementById('weekHeading');
+  const weekFooter = document.getElementById('weekFooter');
+  const tradesView = document.getElementById('tradesView');
+  const newsView = document.getElementById('newsView');
+  const newsList = document.getElementById('newsList');
+  const newsEmptyState = document.getElementById('newsEmptyState');
+
+  function currentWeek(){
+    return weeks.find(w => w.id === currentWeekId) || weeks[0];
+  }
+
+  function biasLabel(b){
+    if(b==='bullish') return 'Bullish';
+    if(b==='bearish') return 'Bearish';
+    return 'Pending';
+  }
+
+  function passesFilter(t){
+    if(activeFilter==='live') return t.live && (!searchTerm || t.pair.toLowerCase().includes(searchTerm.toLowerCase()));
+    if(activeFilter==='fav') return t.fav && (!searchTerm || t.pair.toLowerCase().includes(searchTerm.toLowerCase()));
+    if(activeFilter!=='all' && t.bias!==activeFilter) return false;
+    if(searchTerm && !t.pair.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    return true;
+  }
+
+  function sortedTrades(){
+    let list = currentWeek().trades.slice();
+    if(sortKey){
+      list.sort((a,b)=>{
+        let av = a[sortKey]===undefined ? '' : String(a[sortKey]).toLowerCase();
+        let bv = b[sortKey]===undefined ? '' : String(b[sortKey]).toLowerCase();
+        if(sortKey==='bias'){ av=biasLabel(a.bias); bv=biasLabel(b.bias); }
+        if(av<bv) return -1*sortDir;
+        if(av>bv) return 1*sortDir;
+        return 0;
+      });
+    }
+    return list;
+  }
+
+  function updateStats(){
+    const trades = currentWeek().trades;
+    const total = trades.length;
+    const bull = trades.filter(t=>t.bias==='bullish');
+    const bear = trades.filter(t=>t.bias==='bearish');
+    const pend = trades.filter(t=>t.bias==='pending');
+    const live = trades.filter(t=>t.live);
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statBull').textContent = bull.length;
+    document.getElementById('statBear').textContent = bear.length;
+    document.getElementById('statPending').textContent = pend.length;
+    document.getElementById('statLive').textContent = live.length;
+
+    document.getElementById('statBullSub').textContent = bull.length ? bull.map(t=>t.pair).join(' · ') : 'none this week';
+    document.getElementById('statBearSub').textContent = bear.length ? bear.map(t=>t.pair).join(' · ') : 'none this week';
+    document.getElementById('statPendingSub').textContent = pend.length ? pend.map(t=>t.pair).join(' · ') : 'none this week';
+
+    document.getElementById('metaTotal').textContent = total;
+    document.getElementById('metaLive').textContent = live.length;
+
+    weekHeading.textContent = currentWeek().label;
+    weekFooter.textContent = currentWeek().label;
+    document.getElementById('newsCount').textContent = currentWeek().news.length;
+  }
+
+  function renderWeekTabs(){
+    weekNav.innerHTML = weeks.map(w => `
+      <button class="week-tab ${w.id===currentWeekId ? 'active' : ''}" data-week-id="${w.id}">
+        <span class="week-tab-label" contenteditable="true" data-week-field="label" data-week-id="${w.id}">${w.label}</span>
+        ${weeks.length > 1 ? `<span class="week-tab-del" data-action="delete-week" data-week-id="${w.id}" title="Delete week">✕</span>` : ''}
+      </button>
+    `).join('') + `<button class="week-tab week-tab-add" id="addWeekBtn" title="Add a new week">+ Week</button>`;
+  }
+
+  function renderNews(){
+    const news = currentWeek().news;
+    newsEmptyState.style.display = news.length ? 'none' : 'block';
+    newsList.innerHTML = news.map(n => `
+      <div class="news-card impact-${n.impact}" data-id="${n.id}">
+        <button class="btn danger-txt card-del" data-action="delete-news" data-id="${n.id}" title="Remove news item">✕</button>
+        <div class="news-top">
+          <input class="news-event" data-nfield="event" data-id="${n.id}" value="${escapeAttr(n.event)}" placeholder="Event name — e.g. US NFP, BoE Rate Decision">
+          <select class="impact-select impact-${n.impact}" data-nfield="impact" data-id="${n.id}">
+            <option value="low" ${n.impact==='low'?'selected':''}>Low Impact</option>
+            <option value="medium" ${n.impact==='medium'?'selected':''}>Medium Impact</option>
+            <option value="high" ${n.impact==='high'?'selected':''}>High Impact</option>
+          </select>
+        </div>
+        <div class="news-meta-row">
+          <div class="news-field">
+            <label>Date / time</label>
+            <input class="news-date" data-nfield="date" data-id="${n.id}" value="${escapeAttr(n.date)}" placeholder="e.g. Thu 4 Sep, 1:30pm GMT">
+          </div>
+          <div class="news-field">
+            <label>Pairs affected</label>
+            <input class="news-pairs" data-nfield="pairs" data-id="${n.id}" value="${escapeAttr(n.pairs)}" placeholder="e.g. EUR/USD, EUR/JPY, EUR/CAD">
+          </div>
+        </div>
+        <label class="news-note-label">Expected effect on these trades</label>
+        <textarea class="news-note" data-nfield="note" data-id="${n.id}" placeholder="How this could move the pairs above, and how much...">${n.note}</textarea>
+      </div>
+    `).join('');
+  }
+
+  function wireNewsEvents(){
+    newsList.querySelectorAll('[data-nfield]').forEach(el=>{
+      const field = el.dataset.nfield;
+      const id = Number(el.dataset.id);
+
+      if(el.tagName === 'SELECT'){
+        el.addEventListener('change', ()=>{
+          const n = currentWeek().news.find(n => n.id === id);
+          n.impact = el.value;
+          render();
+        });
+        return;
+      }
+
+      el.addEventListener('input', ()=>{
+        const n = currentWeek().news.find(n => n.id === id);
+        if(!n) return;
+        n[field] = el.value;
+        document.getElementById('newsCount').textContent = currentWeek().news.length;
+      });
+    });
+  }
+
+
+  function render(){
+    const visible = sortedTrades().filter(passesFilter);
+    emptyState.style.display = visible.length ? 'none' : 'block';
+
+    // ---- cards ----
+    cardGrid.innerHTML = visible.map(t => `
+      <div class="trade-card ${t.bias} ${t.live ? 'is-live' : ''} ${t.fav ? 'is-fav' : ''}" data-id="${t.id}">
+        <button class="btn danger-txt card-del" data-action="delete" data-id="${t.id}" title="Remove pair">✕</button>
+        <div class="trade-top">
+          <button class="star-btn ${t.fav ? 'is-fav' : ''}" data-action="toggle-fav" data-id="${t.id}" title="Favourite of the week">${t.fav ? '★' : '☆'}</button>
+          <span class="trade-pair" contenteditable="true" data-field="pair" data-id="${t.id}">${t.pair}</span>
+          <div class="trade-top-right">
+            <input type="checkbox" class="live-toggle" data-field="live" data-id="${t.id}" ${t.live ? 'checked' : ''} title="Mark live">
+            <select class="bias-select ${t.bias}" data-field="bias" data-id="${t.id}">
+              <option value="bullish" ${t.bias==='bullish'?'selected':''}>Bullish</option>
+              <option value="bearish" ${t.bias==='bearish'?'selected':''}>Bearish</option>
+              <option value="pending" ${t.bias==='pending'?'selected':''}>Pending</option>
+            </select>
+          </div>
+        </div>
+        <input class="trade-status" data-field="status" data-id="${t.id}" value="${escapeAttr(t.status)}">
+        <textarea class="trade-note" data-field="note" data-id="${t.id}">${t.note}</textarea>
+        <div class="tf-row">
+          <span class="tf-label">Timeframe</span>
+          <input class="tf-input" data-field="tf" data-id="${t.id}" value="${escapeAttr(t.tf)}">
+        </div>
+      </div>
+    `).join('');
+
+    // ---- table ----
+    tableBody.innerHTML = visible.map(t => `
+      <tr class="${t.live ? 'is-live' : ''} ${t.fav ? 'is-fav' : ''}" data-id="${t.id}">
+        <td class="pair-cell">
+          <button class="star-btn ${t.fav ? 'is-fav' : ''}" data-action="toggle-fav" data-id="${t.id}" title="Favourite of the week" style="font-size:14px; vertical-align:-2px;">${t.fav ? '★' : '☆'}</button>
+          ${t.pair}
+        </td>
+        <td>
+          <span class="bias-pill ${t.bias}"><span class="bias-dot"></span>
+            <select class="status-txt" style="width:auto; border-bottom:none;" data-field="bias" data-id="${t.id}">
+              <option value="bullish" ${t.bias==='bullish'?'selected':''}>Bullish</option>
+              <option value="bearish" ${t.bias==='bearish'?'selected':''}>Bearish</option>
+              <option value="pending" ${t.bias==='pending'?'selected':''}>Pending</option>
+            </select>
+          </span>
+        </td>
+        <td><input class="status-txt" data-field="status" data-id="${t.id}" value="${escapeAttr(t.status)}"></td>
+        <td><input class="status-note" data-field="note" data-id="${t.id}" value="${escapeAttr(t.note)}"></td>
+        <td><input class="tf-tag-input" data-field="tf" data-id="${t.id}" value="${escapeAttr(t.tf)}"></td>
+        <td><input type="checkbox" class="live-toggle" data-field="live" data-id="${t.id}" ${t.live ? 'checked' : ''}></td>
+        <td><button class="btn danger-txt" data-action="delete" data-id="${t.id}" title="Remove pair">✕</button></td>
+      </tr>
+    `).join('');
+
+    renderWeekTabs();
+    renderNews();
+    updateStats();
+    wireRowEvents();
+    wireWeekTabEvents();
+    wireNewsEvents();
+
+    tradesView.style.display = activeView === 'trades' ? '' : 'none';
+    newsView.style.display = activeView === 'news' ? '' : 'none';
+    document.querySelectorAll('.view-tab').forEach(b => b.classList.toggle('active', b.dataset.view === activeView));
+
+    saveState();
+  }
+
+  function escapeAttr(s){
+    return String(s===undefined ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+  }
+
+  function findTrade(id){
+    return currentWeek().trades.find(t => t.id === Number(id));
+  }
+
+  function wireRowEvents(){
+    document.querySelectorAll('[data-field]').forEach(el=>{
+      const field = el.dataset.field;
+      const id = el.dataset.id;
+
+      if(el.type === 'checkbox'){
+        el.addEventListener('change', ()=>{
+          const t = findTrade(id);
+          t.live = el.checked;
+          render();
+        });
+        return;
+      }
+
+      if(el.tagName === 'SELECT'){
+        el.addEventListener('change', ()=>{
+          const t = findTrade(id);
+          t.bias = el.value;
+          render();
+        });
+        return;
+      }
+
+      const evt = el.tagName === 'SPAN' ? 'blur' : 'input';
+      el.addEventListener(evt, ()=>{
+        const t = findTrade(id);
+        if(!t) return;
+        const val = el.tagName === 'SPAN' ? el.textContent.trim() : el.value;
+        t[field] = val;
+        updateStats();
+      });
+
+      // re-render on blur for text fields so card/table stay in sync without losing focus mid-keystroke
+      if(evt === 'input'){
+        el.addEventListener('blur', render);
+      }
+    });
+  }
+
+  function wireWeekTabEvents(){
+    const addBtn = document.getElementById('addWeekBtn');
+    if(addBtn){
+      addBtn.addEventListener('click', ()=>{
+        const id = nextWeekId++;
+        weeks.push({id, label:'New Week', trades:[]});
+        currentWeekId = id;
+        render();
+      });
+    }
+    weekNav.querySelectorAll('[data-week-field="label"]').forEach(el=>{
+      el.addEventListener('blur', ()=>{
+        const w = weeks.find(w => w.id === Number(el.dataset.weekId));
+        if(w) w.label = el.textContent.trim() || w.label;
+        updateStats();
+      });
+      el.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){ e.preventDefault(); el.blur(); }
+      });
+    });
+  }
+
+  // ---- week tab switching / deleting (event delegation) ----
+  weekNav.addEventListener('click', (e)=>{
+    const delBtn = e.target.closest('[data-action="delete-week"]');
+    if(delBtn){
+      e.stopPropagation();
+      const id = Number(delBtn.dataset.weekId);
+      if(weeks.length <= 1) return;
+      weeks = weeks.filter(w => w.id !== id);
+      if(currentWeekId === id) currentWeekId = weeks[0].id;
+      render();
+      return;
+    }
+    const label = e.target.closest('[data-week-field="label"]');
+    if(label) return; // let contenteditable focus instead of switching tabs
+    const tab = e.target.closest('.week-tab');
+    if(tab && tab.dataset.weekId){
+      currentWeekId = Number(tab.dataset.weekId);
+      render();
+    }
+  });
+
+  // ---- view tabs (Trades / News) ----
+  document.getElementById('viewTabs').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.view-tab');
+    if(!btn) return;
+    activeView = btn.dataset.view;
+    render();
+  });
+
+  // ---- filter tabs ----
+  document.getElementById('filterTabs').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.filter-tab');
+    if(!btn) return;
+    document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+
+  // ---- search ----
+  document.getElementById('searchBox').addEventListener('input', (e)=>{
+    searchTerm = e.target.value;
+    render();
+  });
+
+  // ---- add trade ----
+  document.getElementById('addTradeBtn').addEventListener('click', ()=>{
+    currentWeek().trades.push({id: nextId++, pair:'NEW/PAIR', bias:'pending', status:'Awaiting Analysis', note:'Click to add details…', tf:'—', live:false, fav:false});
+    render();
+  });
+
+  // ---- reset to built-in defaults ----
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(!confirm('This clears everything saved in this browser and restores the original starting data. This can\'t be undone. Continue?')) return;
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+    weeks = JSON.parse(JSON.stringify(defaultWeeks));
+    currentWeekId = 1;
+    nextId = 10;
+    nextWeekId = 3;
+    nextNewsId = 8;
+    activeFilter = 'all';
+    activeView = 'trades';
+    searchTerm = '';
+    document.getElementById('searchBox').value = '';
+    render();
+  });
+
+  // ---- add news ----
+  document.getElementById('addNewsBtn').addEventListener('click', ()=>{
+    currentWeek().news.push({id: nextNewsId++, event:'', date:'', impact:'medium', pairs:'', note:''});
+    render();
+  });
+
+  // ---- delete trade / news / toggle favourite (event delegation, covers cards + table) ----
+  document.addEventListener('click', (e)=>{
+    const delBtn = e.target.closest('[data-action="delete"]');
+    if(delBtn){
+      const id = Number(delBtn.dataset.id);
+      currentWeek().trades = currentWeek().trades.filter(t => t.id !== id);
+      render();
+      return;
+    }
+    const delNewsBtn = e.target.closest('[data-action="delete-news"]');
+    if(delNewsBtn){
+      const id = Number(delNewsBtn.dataset.id);
+      currentWeek().news = currentWeek().news.filter(n => n.id !== id);
+      render();
+      return;
+    }
+    const favBtn = e.target.closest('[data-action="toggle-fav"]');
+    if(favBtn){
+      const t = findTrade(favBtn.dataset.id);
+      t.fav = !t.fav;
+      render();
+    }
+  });
+
+  // ---- table sort ----
+  document.querySelectorAll('th[data-sort]').forEach(th=>{
+    th.addEventListener('click', ()=>{
+      const key = th.dataset.sort;
+      if(sortKey === key){ sortDir *= -1; } else { sortKey = key; sortDir = 1; }
+      document.querySelectorAll('th .arrow').forEach(a=>a.textContent='');
+      th.querySelector('.arrow').textContent = sortDir === 1 ? '▲' : '▼';
+      render();
+    });
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
