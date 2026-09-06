@@ -497,6 +497,7 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
 
   // ---- data: one trades array per week ----
   const STORAGE_KEY = 'pro-trend-trades-v1';
+  const DATA_VERSION = 2; // bump this any time the built-in default data changes, to auto-invalidate old saved data
 
   const defaultWeeks = [
     {
@@ -527,14 +528,23 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
       id:2,
       label:'Week of Sep 7',
       news:[],
-      trades:[]
+      trades:[
+        {id:10, pair:'USD/CAD', bias:'bearish', status:'Awaiting Retest & Entry Signal', note:'Waiting for another retest, then a proper entry signal before shorting.', tf:'—', live:false, fav:false},
+        {id:11, pair:'NZD/JPY', bias:'bullish', status:'Awaiting Retest', note:'Counter-trend buy — not a big favourite of this one. Waiting for a retest before buying.', tf:'—', live:false, fav:false},
+        {id:12, pair:'GBP/JPY', bias:'bullish', status:'Awaiting Retest / Break & Retest', note:'Counter-trend trade — not a big favourite. Waiting for either a straight retest or a break and retest before entry.', tf:'—', live:false, fav:false},
+        {id:13, pair:'GBP/CHF', bias:'bearish', status:'Awaiting Retest / Break & Retest', note:'Two AOIs in play — either a retest on the top AOI to sell from, or a break and retest on the middle AOI to sell from there instead.', tf:'—', live:false, fav:false},
+        {id:14, pair:'GBP/NZD', bias:'bullish', status:'Awaiting Break & Retest', note:'Waiting for a break and retest before buying.', tf:'—', live:false, fav:false},
+        {id:15, pair:'EUR/USD', bias:'bullish', status:'Awaiting Retest', note:'Favourite of the week. Waiting for a retest before buying.', tf:'—', live:false, fav:true},
+        {id:16, pair:'AUD/CAD', bias:'bullish', status:'Awaiting Retest at Line', note:'Least favourite of the week. Looking for a retest at the line before buying.', tf:'—', live:false, fav:false},
+        {id:17, pair:'GBP/USD', bias:'bearish', status:'Awaiting Retest', note:'Bearish trend — looking for a retest before selling.', tf:'—', live:false, fav:false}
+      ]
     }
   ];
 
   // ---- load saved data if it exists, otherwise fall back to the defaults above ----
   let weeks = defaultWeeks;
-  let currentWeekId = 1;
-  let nextId = 10;
+  let currentWeekId = 2;
+  let nextId = 18;
   let nextWeekId = 3;
   let nextNewsId = 8;
 
@@ -542,13 +552,14 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
     const saved = localStorage.getItem(STORAGE_KEY);
     if(saved){
       const data = JSON.parse(saved);
-      if(data && Array.isArray(data.weeks) && data.weeks.length){
+      if(data && data.version === DATA_VERSION && Array.isArray(data.weeks) && data.weeks.length){
         weeks = data.weeks;
         currentWeekId = data.currentWeekId || weeks[0].id;
         nextId = data.nextId || nextId;
         nextWeekId = data.nextWeekId || nextWeekId;
         nextNewsId = data.nextNewsId || nextNewsId;
       }
+      // if the saved version doesn't match, it's stale — silently ignore it and use the fresh defaults above instead
     }
   } catch(e){
     console.error('Could not load saved data, using defaults', e);
@@ -556,7 +567,7 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
 
   function saveState(){
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ weeks, currentWeekId, nextId, nextWeekId, nextNewsId }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: DATA_VERSION, weeks, currentWeekId, nextId, nextWeekId, nextNewsId }));
     } catch(e){
       console.error('Could not save data', e);
     }
@@ -888,13 +899,37 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
     render();
   });
 
-  // ---- reset to built-in defaults ----
-  document.getElementById('resetBtn').addEventListener('click', ()=>{
-    if(!confirm('This clears everything saved in this browser and restores the original starting data. This can\'t be undone. Continue?')) return;
+  // ---- reset to built-in defaults (two-click confirm, no native dialog) ----
+  let resetArmed = false;
+  let resetArmTimer = null;
+  const resetBtn = document.getElementById('resetBtn');
+
+  resetBtn.addEventListener('click', ()=>{
+    if(!resetArmed){
+      resetArmed = true;
+      resetBtn.textContent = 'Click again to confirm';
+      resetBtn.style.borderColor = 'var(--red)';
+      resetBtn.style.color = 'var(--red)';
+      clearTimeout(resetArmTimer);
+      resetArmTimer = setTimeout(()=>{
+        resetArmed = false;
+        resetBtn.textContent = 'Reset';
+        resetBtn.style.borderColor = '';
+        resetBtn.style.color = '';
+      }, 4000);
+      return;
+    }
+
+    clearTimeout(resetArmTimer);
+    resetArmed = false;
+    resetBtn.textContent = 'Reset';
+    resetBtn.style.borderColor = '';
+    resetBtn.style.color = '';
+
     try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
     weeks = JSON.parse(JSON.stringify(defaultWeeks));
-    currentWeekId = 1;
-    nextId = 10;
+    currentWeekId = 2;
+    nextId = 18;
     nextWeekId = 3;
     nextNewsId = 8;
     activeFilter = 'all';
