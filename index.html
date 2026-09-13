@@ -497,7 +497,7 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
 
   // ---- data: one trades array per week ----
   const STORAGE_KEY = 'pro-trend-trades-v1';
-  const DATA_VERSION = 2; // bump this any time the built-in default data changes, to auto-invalidate old saved data
+  const DATA_VERSION = 5; // bump this any time the built-in default data changes, to auto-invalidate old saved data
 
   const defaultWeeks = [
     {
@@ -529,23 +529,44 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
       label:'Week of Sep 7',
       news:[],
       trades:[
-        {id:10, pair:'USD/CAD', bias:'bearish', status:'Awaiting Retest & Entry Signal', note:'Waiting for another retest, then a proper entry signal before shorting.', tf:'—', live:false, fav:false},
-        {id:11, pair:'NZD/JPY', bias:'bullish', status:'Awaiting Retest', note:'Counter-trend buy — not a big favourite of this one. Waiting for a retest before buying.', tf:'—', live:false, fav:false},
-        {id:12, pair:'GBP/JPY', bias:'bullish', status:'Awaiting Retest / Break & Retest', note:'Counter-trend trade — not a big favourite. Waiting for either a straight retest or a break and retest before entry.', tf:'—', live:false, fav:false},
-        {id:13, pair:'GBP/CHF', bias:'bearish', status:'Awaiting Retest / Break & Retest', note:'Two AOIs in play — either a retest on the top AOI to sell from, or a break and retest on the middle AOI to sell from there instead.', tf:'—', live:false, fav:false},
-        {id:14, pair:'GBP/NZD', bias:'bullish', status:'Awaiting Break & Retest', note:'Waiting for a break and retest before buying.', tf:'—', live:false, fav:false},
-        {id:15, pair:'EUR/USD', bias:'bullish', status:'Awaiting Retest', note:'Favourite of the week. Waiting for a retest before buying.', tf:'—', live:false, fav:true},
-        {id:16, pair:'AUD/CAD', bias:'bullish', status:'Awaiting Retest at Line', note:'Least favourite of the week. Looking for a retest at the line before buying.', tf:'—', live:false, fav:false},
-        {id:17, pair:'GBP/USD', bias:'bearish', status:'Awaiting Retest', note:'Bearish trend — looking for a retest before selling.', tf:'—', live:false, fav:false}
+        {id:10, pair:'USD/CAD', bias:'bearish', status:'Not Taken This Week', note:'Was waiting for another retest, then an entry signal. Not entered.', tf:'—', live:false, fav:false},
+        {id:11, pair:'NZD/JPY', bias:'bullish', status:'Not Taken This Week', note:'Counter-trend buy, not a big favourite. Was waiting for a retest. Not entered.', tf:'—', live:false, fav:false},
+        {id:12, pair:'GBP/JPY', bias:'bullish', status:'Not Taken This Week', note:'Counter-trend trade, not a big favourite. Was waiting for a retest or break and retest. Not entered.', tf:'—', live:false, fav:false},
+        {id:13, pair:'GBP/CHF', bias:'bearish', status:'Not Taken This Week', note:'Was watching two AOIs for a retest or break and retest to sell. Not entered.', tf:'—', live:false, fav:false},
+        {id:14, pair:'GBP/NZD', bias:'bullish', status:'Not Taken This Week', note:'Was waiting for a break and retest to buy. Not entered.', tf:'—', live:false, fav:false},
+        {id:15, pair:'EUR/USD', bias:'bullish', status:'Closed — Stop Loss Hit', note:'Favourite of the week. Entry taken on the retest, but price reversed and hit stop loss. Losing trade.', tf:'—', live:false, fav:true},
+        {id:16, pair:'AUD/CAD', bias:'bullish', status:'Closed — Stop Loss Hit', note:'Least favourite of the week. Entry taken at the retest line, but price reversed and hit stop loss. Losing trade.', tf:'—', live:false, fav:false},
+        {id:17, pair:'GBP/USD', bias:'bearish', status:'Not Taken This Week', note:'Bearish trend — was looking for a retest to sell. Not entered.', tf:'—', live:false, fav:false}
+      ]
+    },
+    {
+      id:3,
+      label:'Week of Sep 14',
+      news:[],
+      trades:[
+        {id:20, pair:'EUR/USD', bias:'bullish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true},
+        {id:21, pair:'EUR/JPY', bias:'bearish', status:'Awaiting Analysis', note:'Bias noted — full analysis still to come.', tf:'—', live:false, fav:false},
+        {id:22, pair:'EUR/CHF', bias:'bullish', status:'Awaiting Analysis', note:'Bias noted — full analysis still to come.', tf:'—', live:false, fav:false},
+        {id:23, pair:'GBP/JPY', bias:'bearish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true},
+        {id:24, pair:'GBP/CHF', bias:'bullish', status:'Awaiting Analysis', note:'Bias noted — full analysis still to come.', tf:'—', live:false, fav:false},
+        {id:25, pair:'GBP/NZD', bias:'bullish', status:'Awaiting Analysis', note:'Bias noted — full analysis still to come.', tf:'—', live:false, fav:false},
+        {id:26, pair:'AUD/CHF', bias:'bullish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true},
+        {id:27, pair:'NZD/JPY', bias:'bearish', status:'Awaiting Analysis', note:'Bias noted — full analysis still to come.', tf:'—', live:false, fav:false},
+        {id:28, pair:'NZD/CHF', bias:'bullish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true},
+        {id:29, pair:'CAD/CHF', bias:'bullish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true},
+        {id:30, pair:'NZD/USD', bias:'bearish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true},
+        {id:31, pair:'GBP/CAD', bias:'bearish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true},
+        {id:32, pair:'USD/CHF', bias:'bullish', status:'Awaiting Analysis', note:'Bias noted — full analysis still to come.', tf:'—', live:false, fav:false},
+        {id:33, pair:'GBP/AUD', bias:'bearish', status:'Check for Entry — Mon 14th, 6am', note:'Closer to entry than the rest of the list — check back Monday 14th at 6am.', tf:'—', live:false, fav:true}
       ]
     }
   ];
 
   // ---- load saved data if it exists, otherwise fall back to the defaults above ----
   let weeks = defaultWeeks;
-  let currentWeekId = 2;
-  let nextId = 18;
-  let nextWeekId = 3;
+  let currentWeekId = 3;
+  let nextId = 34;
+  let nextWeekId = 4;
   let nextNewsId = 8;
 
   try {
@@ -928,9 +949,9 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
 
     try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
     weeks = JSON.parse(JSON.stringify(defaultWeeks));
-    currentWeekId = 2;
-    nextId = 18;
-    nextWeekId = 3;
+    currentWeekId = 3;
+    nextId = 34;
+    nextWeekId = 4;
     nextNewsId = 8;
     activeFilter = 'all';
     activeView = 'trades';
