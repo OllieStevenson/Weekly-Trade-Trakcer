@@ -497,7 +497,7 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
 
   // ---- data: one trades array per week ----
   const STORAGE_KEY = 'pro-trend-trades-v1';
-  const DATA_VERSION = 10; // bump this any time the built-in default data changes, to auto-invalidate old saved data
+  const DATA_VERSION = 11; // bump this any time the built-in default data changes, to auto-invalidate old saved data
 
   const defaultWeeks = [
     {
@@ -577,30 +577,48 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
       label:'Week of Sep 28',
       news:[],
       trades:[
-        {id:40, pair:'GBP/NZD', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:41, pair:'GBP/CAD', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:42, pair:'GBP/CHF', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:43, pair:'EUR/CHF', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:44, pair:'EUR/NZD', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:45, pair:'NZD/CHF', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:46, pair:'CAD/CHF', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:47, pair:'CAD/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:48, pair:'USD/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:49, pair:'AUD/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:50, pair:'EUR/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:51, pair:'GBP/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:52, pair:'EUR/AUD', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:53, pair:'AUD/CAD', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
-        {id:54, pair:'NZD/CAD', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false}
+        {id:40, pair:'GBP/NZD', bias:'bearish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:41, pair:'GBP/CAD', bias:'bearish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:42, pair:'GBP/CHF', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:43, pair:'EUR/CHF', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:44, pair:'EUR/NZD', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:45, pair:'NZD/CHF', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:46, pair:'CAD/CHF', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:47, pair:'CAD/JPY', bias:'bearish', status:'Closed — Stop Loss Hit', note:'Entry taken. Trade hit stop loss.', tf:'—', live:false, fav:false},
+        {id:48, pair:'USD/JPY', bias:'bearish', status:'Closed — Stop Loss Hit', note:'Entry taken. Trade hit stop loss.', tf:'—', live:false, fav:false},
+        {id:49, pair:'AUD/JPY', bias:'bearish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:50, pair:'EUR/JPY', bias:'bearish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:51, pair:'GBP/JPY', bias:'bearish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:52, pair:'EUR/AUD', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:53, pair:'AUD/CAD', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:54, pair:'NZD/CAD', bias:'bullish', status:'Not Taken This Week', note:'Was on the watchlist, full setup never analysed. Not entered.', tf:'—', live:false, fav:false},
+        {id:55, pair:'GBP/USD', bias:'bearish', status:'Closed — Stop Loss Hit', note:'Entry taken. Trade hit stop loss.', tf:'—', live:false, fav:false}
+      ]
+    },
+    {
+      id:6,
+      label:'Week of Oct 5',
+      news:[],
+      trades:[
+        {id:56, pair:'GBP/USD', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:57, pair:'USD/CAD', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:58, pair:'EUR/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:59, pair:'EUR/CAD', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:60, pair:'GBP/NZD', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:61, pair:'NZD/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:62, pair:'GBP/CAD', bias:'bullish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:63, pair:'EUR/NZD', bias:'pending', status:'Awaiting Analysis', note:'Bias dependent — not firmly bullish or bearish yet, conditional on how price develops.', tf:'—', live:false, fav:false},
+        {id:64, pair:'GBP/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false},
+        {id:65, pair:'CAD/JPY', bias:'bearish', status:'Awaiting Analysis', note:'On the watchlist — full setup not yet analysed.', tf:'—', live:false, fav:false}
       ]
     }
   ];
 
   // ---- load saved data if it exists, otherwise fall back to the defaults above ----
   let weeks = defaultWeeks;
-  let currentWeekId = 5;
-  let nextId = 55;
-  let nextWeekId = 6;
+  let currentWeekId = 6;
+  let nextId = 66;
+  let nextWeekId = 7;
   let nextNewsId = 8;
 
   try {
@@ -983,9 +1001,9 @@ footer .line{width:60px; height:1px; background:var(--line); margin:0 auto 18px 
 
     try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
     weeks = JSON.parse(JSON.stringify(defaultWeeks));
-    currentWeekId = 5;
-    nextId = 55;
-    nextWeekId = 6;
+    currentWeekId = 6;
+    nextId = 66;
+    nextWeekId = 7;
     nextNewsId = 8;
     activeFilter = 'all';
     activeView = 'trades';
